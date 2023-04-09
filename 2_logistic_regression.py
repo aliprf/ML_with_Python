@@ -102,7 +102,7 @@ def make_gif(frame_folder):
     frames = [Image.open(image) for image in glob.glob(f"{frame_folder}/*.png")]
     frame_one = frames[0]
     frame_one.save("logistic_regression.gif", format="GIF", append_images=frames,
-               save_all=True, duration=300, loop=0)
+               save_all=True, duration=100, loop=1)
 
 
 if __name__ == '__main__':
@@ -113,11 +113,10 @@ if __name__ == '__main__':
     # ''''''
     w = np.random.uniform(-5, 1)
     b =  np.random.uniform(-10,10)
-    epoch = 100
+    epoch = 50
     for i in range(epoch):
         plot_ds(ds, w, b, 'Log_reg_data_norm' + str(i))
         w, b, loss = log_reg(_ds=ds, _w=w, _b=b)
         print(loss)
     make_gif('./img/')
-        # if i % 10 == 0 or i == epoch-1:
     # ''''''
