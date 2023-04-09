@@ -1,6 +1,8 @@
+import glob
 import random
 import matplotlib.pyplot as plt
 import numpy as np
+from PIL import Image
 
 
 def create_data(data_dim: int, data_set_size: int):
@@ -96,18 +98,26 @@ def log_reg(_ds: dict, _w: float, _b: float):
     return _w, _b, loss
 
 
+def make_gif(frame_folder):
+    frames = [Image.open(image) for image in glob.glob(f"{frame_folder}/*.png")]
+    frame_one = frames[0]
+    frame_one.save("logistic_regression.gif", format="GIF", append_images=frames,
+               save_all=True, duration=300, loop=0)
+
+
 if __name__ == '__main__':
     data_dim = 1
     ds = create_data(data_dim=data_dim, data_set_size=100)
-    plot_ds(ds, None, None, 'Log_reg_data_norm')
+    # plot_ds(ds, None, None, 'Log_reg_data_norm')
     ds = normalize_ds(ds)
     # ''''''
     w = np.random.uniform(-5, 1)
     b =  np.random.uniform(-10,10)
-    epoch = 10
+    epoch = 100
     for i in range(epoch):
         plot_ds(ds, w, b, 'Log_reg_data_norm' + str(i))
         w, b, loss = log_reg(_ds=ds, _w=w, _b=b)
         print(loss)
+    make_gif('./img/')
         # if i % 10 == 0 or i == epoch-1:
     # ''''''
