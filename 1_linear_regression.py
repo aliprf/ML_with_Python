@@ -39,7 +39,7 @@ def plot_ds(_ds, _w, _b, name: str):
     if _w is None:
         fig, ax = plt.subplots(nrows=1, ncols=1)  # create figure & 1 axis
         ax.scatter(_ds['x'], ds['y'])
-        fig.savefig('./img/' + name+'.png')  # save the figure to file
+        fig.savefig('./img/' + name + '.png')  # save the figure to file
         plt.close(fig)
     else:
         min_x = min(_ds['x'])
@@ -63,7 +63,7 @@ def lin_reg(_ds: dict, _w: float, _b: float):
     ''''''
     bs_size = 10
     loss = 0
-    for j in range(d_len//bs_size):
+    for j in range(d_len // bs_size):
         d_c_0 = 0
         d_c_1 = 0
         for i in range(bs_size):
@@ -71,13 +71,13 @@ def lin_reg(_ds: dict, _w: float, _b: float):
             y = y_data[i]
             y_h = _w * x + b
             '''loss'''
-            loss += ((y - y_h) ** 2)/bs_size
+            loss += ((y - y_h) ** 2) / bs_size
             '''derivative'''
-            d_loss_d_yh = 2.0 * (y - y_h)
+            d_loss_d_yh = -2.0 * (y - y_h)  # WE are going to minimize the loss
             d_yh_d_w = x  # yh = w x + b => d_yh/d_w = x
             d_yh_d_b = 1  # yh = w x + b => d_yh/d_b = 1
-            d_c_0 += -1 * (d_loss_d_yh * d_yh_d_w)/bs_size
-            d_c_1 += -1 * (d_loss_d_yh * d_yh_d_b)/bs_size
+            d_c_0 += (d_loss_d_yh * d_yh_d_w) / bs_size
+            d_c_1 += (d_loss_d_yh * d_yh_d_b) / bs_size
 
         _w = _w - lr * d_c_0
         _b = _b - lr * d_c_1
@@ -89,16 +89,15 @@ def lin_reg(_ds: dict, _w: float, _b: float):
 if __name__ == '__main__':
     data_dim = 1
     ds = create_data(data_dim=data_dim, data_set_size=100)
-    plot_ds(ds, None, None, 'data')
     ds = normalize_ds(ds)
-    plot_ds(ds, None, None, 'data_norm')
+    plot_ds(ds, None, None, 'Lin_reg_data_norm')
 
     # ''''''
     w = np.random.uniform(-1, 1)
-    b = 0 #np.random.uniform(-1,1)
+    b = 0  # np.random.uniform(-1,1)
     epoch = 10
     for i in range(epoch):
-        plot_ds(ds, w, b, 'data_norm' + str(i))
+        plot_ds(ds, w, b, 'Lin_reg_data_norm' + str(i))
         w, b, loss = lin_reg(_ds=ds, _w=w, _b=b)
         print(loss)
         # if i % 10 == 0 or i == epoch-1:
