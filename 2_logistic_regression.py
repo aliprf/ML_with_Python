@@ -102,9 +102,9 @@ if __name__ == '__main__':
     plot_ds(ds, None, None, 'Log_reg_data_norm')
     ds = normalize_ds(ds)
     # ''''''
-    w = np.random.uniform(-0, 1)
-    b = 0  # np.random.uniform(-1,1)
-    epoch = 50
+    w = np.random.uniform(-5, 1)
+    b =  np.random.uniform(-10,10)
+    epoch = 10
     for i in range(epoch):
         plot_ds(ds, w, b, 'Log_reg_data_norm' + str(i))
         w, b, loss = log_reg(_ds=ds, _w=w, _b=b)
